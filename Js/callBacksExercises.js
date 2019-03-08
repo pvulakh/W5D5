@@ -77,17 +77,42 @@ const absurdBubbleSort = (arr, sortCompletionCallback) => {
             innerBubbleSortLoop(arr, 0, false, outerBubbleSortLoop);
         } else {
             sortCompletionCallback(arr);
+            return arr;
         }
     };
     let madeAnySwaps = true;
+    outerBubbleSortLoop(madeAnySwaps);
 };
 
 
-absurdBubbleSort([3, 2, 1], function (arr) {
-    console.log("Sorted array: " + JSON.stringify(arr));
-    reader.close();
-});
+// absurdBubbleSort([3, 2, 1], function (arr) {
+//     console.log("Sorted array: " + JSON.stringify(arr));
+//     reader.close();
+// });
 
+Function.prototype.myBind = function(context) {
 
-// absurdBubbleSort([1,6,3,4], sortCompletionCallback);
-//[1,4,2,5,7,1]
+    return () => {
+        this.apply(context);
+    };
+};
+
+class Lamp {
+    constructor() {
+        this.name = "a lamp";
+    }
+}
+
+const turnOn = function () {
+    console.log("Turning on " + this.name);
+};
+
+const lamp = new Lamp();
+
+turnOn(); // should not work the way we want it to
+
+const boundTurnOn = turnOn.bind(lamp);
+const myBoundTurnOn = turnOn.myBind(lamp);
+
+boundTurnOn();
+myBoundTurnOn();
